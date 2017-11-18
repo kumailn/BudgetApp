@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     public void ShowInputDialog(){
         alertDialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_view, null);
-        final EditText cost = (EditText) view.findViewById(R.id.costID);
+        final EditText cost = (EditText) view.findViewById(R.id.costID); //this is the cost
         final EditText item = (EditText) view.findViewById(R.id.itemDescriptionID);
         Button submit = (Button) view.findViewById(R.id.submitButton);
 
