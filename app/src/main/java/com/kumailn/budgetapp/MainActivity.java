@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     String[] convertResult = new String[1];
     public static String parseConvertResult;
 
+    private AlertDialog.Builder alertDialogBuilder;
+    private AlertDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
         Button button = findViewById(R.id.button);
         Intent i = new Intent(getApplicationContext(), LocationService.class);
         startService(i);
+
+        Button button2 = (Button) findViewById(R.id.button);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ShowInputDialog();
+            }
+        });
     }
 
     @Override
@@ -87,5 +100,34 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
         return parseConvertResult;
     }
+    public void ShowInputDialog(){
+        alertDialogBuilder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_view, null);
+        Button submit = (Button) view.findViewById(R.id.submitButton);
+
+
+        alertDialogBuilder.setView(view); //Set the view to the Dialog View
+        dialog = alertDialogBuilder.create();
+        dialog.show();
+        final EditText cost = (EditText) findViewById(R.id.costID);
+        EditText item = (EditText) findViewById(R.id.itemDescriptionID);
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                if(cost.getText() != null)
+//                {
+//                    SQLiteDatabase database = openOrCreateDatabase("data", MODE_PRIVATE, null);
+//                    database.execSQL("CREATE IF NOT EXISTS Budget ");
+//                }
+                dialog.dismiss();
+                //hello
+                //try again
+            }
+        });
+
+
+    }
+
 
 }
