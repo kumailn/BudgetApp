@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                            Log.e("purchaseID is ", Integer.toString(ID++));
                            ContentValues values = new ContentValues();
                            values.put("PurchaseID", ID);
-                           values.put("Cost", result);
+                           values.put("Cost", result*100);
                            values.put("Item", item.getText().toString());
                            values.put("Date", formattedDate);
                            int TEMPORARYBUDGET = 56;
