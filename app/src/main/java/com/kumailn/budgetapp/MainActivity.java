@@ -3,6 +3,7 @@ package com.kumailn.budgetapp;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
@@ -27,6 +28,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.charts.PieChart;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,10 +43,22 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog dialog;
     EditText cost;
+
+    PieChart budgetPie;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("myData", MODE_PRIVATE);
+        int value1 = sharedPreferences.getInt("Num", 0);
+        if(value1 == 0){
+            sharedPreferences.edit().putInt("Num", value1+1).apply();
+
+            startActivity(new Intent(getApplicationContext(), Main3Activity.class));
+        }
+        sharedPreferences.edit().putInt("Num", value1+1).apply();
+
         Intent i = new Intent(getApplicationContext(), LocationService.class);
         //startService(i);
 
@@ -56,6 +70,11 @@ public class MainActivity extends AppCompatActivity {
                 ShowInputDialog();
             }
         });
+        //Filling the pie chart
+        /*budgetPie = (PieChart) findViewById(R.id.chart1);
+        budgetPie.setUsePercentValues(true);
+
+           */
     }
 
     @Override
@@ -143,7 +162,8 @@ public class MainActivity extends AppCompatActivity {
                            values.put("Cost", result);
                            values.put("Item", item.getText().toString());
                            values.put("Date", formattedDate);
-                           values.put("Total", 56);
+                           int TEMPORARYBUDGET = 56;
+                           values.put("Total", TEMPORARYBUDGET);
                            database.insert("TotalBudget", null, values);
                        }
                        catch(Exception e)
