@@ -130,11 +130,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="24dp" />
 
-            <ImageView
-                android:id="@+id/imageView2"
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart"
+                android:visibility="gone"
+                android:layout_marginTop="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"
-                app:srcCompat="@android:drawable/ic_menu_today" />
+                android:layout_height="500dp" />
 
         </LinearLayout>
     </ScrollView>

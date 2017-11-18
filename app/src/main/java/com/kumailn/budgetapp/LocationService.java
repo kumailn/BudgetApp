@@ -1,6 +1,9 @@
 package com.kumailn.budgetapp;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +27,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LocationService extends Service {
+    String ammountLeft = "0";
+
     public LocationService() {
     }
 
@@ -37,12 +42,18 @@ public class LocationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.e("Service", "Started");
 
+        //Change to sharedPref load
+        ammountLeft = "$52.53";
+
         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         LocationListener locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                parseJSON();
+                parseJSON(String.valueOf(location.getLatitude()), String.valueOf(location.getLongitude()));
+
+                //Testvalues: 42.97529585290097, -81.32619448150638
+
             }
 
             @Override
@@ -66,20 +77,32 @@ public class LocationService extends Service {
     }
 
     com.android.volley.RequestQueue requestQueue;
-    public String parseJSON(){
+    public String parseJSON(String lat, String lon){
         requestQueue = Volley.newRequestQueue(this);
         //String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=42.97529585290097,-81.32619448150638&radius=500&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
-        String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=42.97529585290097,-81.32619448150638&radius=500&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
+        //String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=42.97529585290097,-81.32619448150638&radius=500&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
+        //String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=500&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
+        String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" +lat+ ","+lon+"&rankby=distance&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
         final String[] aaa = {""};
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, jsonURL,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            aaa[0] = response.getJSONArray("results").getJSONObject(0).getString("name");
+                            aaa[0] = response.getJSONArray("results").getJSONObject(1).getString("name");
                             //JSONArray jsonArray = response.getJSONArray("name");
                             //Toast.makeText(MainActivity.this, "JSON WORKS", Toast.LENGTH_SHORT).show();
                             Log.e("JSONVOLLEY", aaa[0]);
+                            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                            Intent intent_main = new Intent(getApplicationContext(), Main2Activity.class);
+
+                            PendingIntent pendingIntentMain = PendingIntent.getActivity(getApplicationContext(), 0, intent_main, PendingIntent.FLAG_CANCEL_CURRENT);
+                            Notification notificationPopup = new Notification.Builder(getApplicationContext()).setContentTitle("You're near, " + aaa[0] + ", you have " + ammountLeft + " left to spend").setContentText("Click here")
+                                    .setContentIntent(pendingIntentMain).setAutoCancel(true).setSmallIcon(R.drawable.ic_launcher_background)
+                                    //Option to show timestamp in notification, set show timestamp to true
+                                    .setWhen(System.currentTimeMillis()).setShowWhen(true).setPriority(Notification.PRIORITY_MAX)
+                                    .setDefaults(Notification.DEFAULT_ALL).build();
+                            notificationManager.notify(0, notificationPopup);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e("No results found", "");
