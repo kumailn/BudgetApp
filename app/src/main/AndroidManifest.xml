@@ -24,8 +24,9 @@
             android:name=".LocationService"
             android:enabled="true"
             android:exported="true"
-            android:process=".locationService">
-        </service>
+            android:process=".locationService"></service>
+
+        <activity android:name=".Main3Activity"></activity>
     </application>
 
 </manifest>

@@ -37,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView5"
-            android:hint="Cost$"
+            android:hint="E.g. $13.67"
             android:textStyle="italic" />
 
         <EditText

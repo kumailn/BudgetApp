@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BudgetApp.iml" filepath="$PROJECT_DIR$/BudgetApp.iml" />
       <module fileurl="file://C:\Users\saami\AndroidStudioProjects\BudgetApp\.idea\BudgetApp.iml" filepath="C:\Users\saami\AndroidStudioProjects\BudgetApp\.idea\BudgetApp.iml" />
+      <module fileurl="file://C:\Users\Kumail\Desktop\Budget\BudgetApp\BudgetApp.iml" filepath="C:\Users\Kumail\Desktop\Budget\BudgetApp\BudgetApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

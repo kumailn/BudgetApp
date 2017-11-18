@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -28,22 +27,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     String[] convertResult = new String[1];
@@ -52,60 +41,12 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog dialog;
     EditText cost;
-
-    LineChart chart;
-    double[] dataObjects = {0.7960,0.7947,0.7946,0.7950,0.7958,0.7984,0.8019,0.8012,0.8012,0.7999,0.7980,0.7924,0.7978,0.8075,0.8066,0.8066,0.8059,0.8082,0.8188,0.8226,0.8241,0.8226,0.8223,0.8246,0.8221,0.8186,0.8196,0.8191,0.8199};
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent i = new Intent(getApplicationContext(), LocationService.class);
-        startService(i);
-        chart = (LineChart) findViewById(R.id.chart);
-
-        //YourData[] dataObjects = ...;
-
-        List<Entry> entries = new ArrayList<Entry>();
-
-        for (double data : dataObjects) {
-            // turn your data into Entry objects
-            entries.add(new Entry((float)data, (int)data));
-        }
-
-        LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
-        dataSet.setColor(Color.RED);
-        dataSet.setValueTextColor(Color.GRAY); // styling, ...
-
-        //LineData lineData = new LineData(dataSet);
-        //chart.setData(lineData);
-        chart.invalidate(); // refresh
-
-        chart.setVisibility(View.VISIBLE);
-        chart.setViewPortOffsets(0, 0, 0, 0);
-        chart.setBackgroundColor(Color.rgb(104, 241, 175));
-        chart.setTouchEnabled(true);
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
-        chart.setPinchZoom(false);
-        chart.setDrawGridBackground(false);
-
-        XAxis x = chart.getXAxis();
-        x.setEnabled(false);
-
-        YAxis y = chart.getAxisLeft();
-        y.setLabelCount(6, false);
-        y.setTextColor(Color.WHITE);
-        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        y.setDrawGridLines(false);
-        y.setAxisLineColor(Color.WHITE);
-
-        chart.getAxisRight().setEnabled(false);
-        chart.getLegend().setEnabled(false);
-
-        chart.animateXY(500, 500);
-        chart.invalidate();
+        //startService(i);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -228,7 +169,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    }
-
-
-
+}
