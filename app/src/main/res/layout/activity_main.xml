@@ -17,4 +17,128 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_dialog_email" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <TextView
+                android:id="@+id/text_spent_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Money Spent"
+                android:textAlignment="center"
+                android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/text_spent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="$0.00"
+                android:textAlignment="center"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:textColor="@color/colorPrimary"
+                android:textSize="64sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <View style="@style/Divider" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Space
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/temp_pie"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:srcCompat="@android:drawable/presence_online" />
+
+                <Space
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/text_rem_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Money Spent"
+                        android:textAlignment="center"
+                        android:textAppearance="@android:style/TextAppearance.Material.Menu"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/text_rem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="$0.00"
+                        android:textAlignment="center"
+                        android:textAppearance="@android:style/TextAppearance.Material.Large"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="64sp" />
+
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <View
+                style="@style/Divider"
+                id="@+id/view"
+                layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <ImageView
+                android:id="@+id/temp_graph"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                app:srcCompat="@android:drawable/ic_menu_today" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
 </android.support.design.widget.CoordinatorLayout>
