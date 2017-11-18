@@ -3,6 +3,7 @@ package com.kumailn.budgetapp;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
@@ -29,6 +30,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
     String[] convertResult = new String[1];
     public static String parseConvertResult;
@@ -43,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button button = findViewById(R.id.button);
-        Intent i = new Intent(getApplicationContext(), LocationService.class);
-        startService(i);
+//        Intent i = new Intent(getApplicationContext(), LocationService.class);
+//        startService(i);
 
         Button button2 = (Button) findViewById(R.id.button);
         button2.setOnClickListener(new View.OnClickListener() {
@@ -107,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_view, null);
         final EditText cost = (EditText) view.findViewById(R.id.costID);
+        final EditText item = (EditText) view.findViewById(R.id.itemDescriptionID);
         Button submit = (Button) view.findViewById(R.id.submitButton);
 
 
@@ -121,15 +126,38 @@ public class MainActivity extends AppCompatActivity {
                 {
                     try{
                         int result = Integer.parseInt(cost.getText().toString());
+                        String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
                         SQLiteDatabase database = openOrCreateDatabase("data", MODE_PRIVATE, null);
-                        database.execSQL("CREATE TABLE IF NOT EXISTS Budget(Cost INT NOT NULL, Item VARCHAR(30), PRIMARY KEY(Cost))");
-                        ContentValues values = new ContentValues();
-                        values.put("Cost", result);
-                        database.insert("Budget", null, values);
+                        database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost INT, Item VARCHAR(30), Date VARCHAR(10), Total INT, PRIMARY KEY(PurchaseID))");
+
+                        try{
+                           Cursor c = database.rawQuery("SELECT Max(PurchaseID) AS ID FROM TotalBudget", null);
+
+                           int purchaseID = c.getColumnIndex("ID");
+                           c.moveToFirst();
+                           Log.e("num is", Integer.toString(purchaseID));
+                           Log.e("cursor is ", Integer.toString(c.getCount()));
+                           int ID = c.getInt(purchaseID);
+                           Log.e("purchaseID is ", Integer.toString(ID++));
+                           ContentValues values = new ContentValues();
+                           values.put("PurchaseID", ID);
+                           values.put("Cost", result);
+                           values.put("Item", item.getText().toString());
+                           values.put("Date", formattedDate);
+                           values.put("Total", 56);
+                           database.insert("TotalBudget", null, values);
+                       }
+                       catch(Exception e)
+                       {
+                           Log.d("purchaseID is 0.", null);
+                           database.execSQL("INSERT INTO TotalBudget(PurchaseID, Cost, Item, Date, Total) VALUES(0, 45,'hello', 'wow', 98)");
+                       }
+
                         database.close();
                         dialog.dismiss();
                     }
                     catch (Exception e) {
+                        Log.e("sqlerror",e.toString());
                         Toast.makeText(getApplicationContext(), "You did not enter an integer for cost.", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                         ShowInputDialog();
