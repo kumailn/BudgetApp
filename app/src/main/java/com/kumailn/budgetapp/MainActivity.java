@@ -1,7 +1,9 @@
 package com.kumailn.budgetapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog dialog;
+    EditText cost;
 
 
     @Override
@@ -103,26 +106,35 @@ public class MainActivity extends AppCompatActivity {
     public void ShowInputDialog(){
         alertDialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_view, null);
+        final EditText cost = (EditText) view.findViewById(R.id.costID);
         Button submit = (Button) view.findViewById(R.id.submitButton);
 
 
         alertDialogBuilder.setView(view); //Set the view to the Dialog View
         dialog = alertDialogBuilder.create();
         dialog.show();
-        final EditText cost = (EditText) findViewById(R.id.costID);
-        EditText item = (EditText) findViewById(R.id.itemDescriptionID);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(cost.getText() != null)
-//                {
-//                    SQLiteDatabase database = openOrCreateDatabase("data", MODE_PRIVATE, null);
-//                    database.execSQL("CREATE IF NOT EXISTS Budget ");
-//                }
-                dialog.dismiss();
-                //hello
-                //try again
+                if(!cost.getText().toString().isEmpty()) //checks if the user has entered anything
+                {
+                    try{
+                        int result = Integer.parseInt(cost.getText().toString());
+                        SQLiteDatabase database = openOrCreateDatabase("data", MODE_PRIVATE, null);
+                        database.execSQL("CREATE TABLE IF NOT EXISTS Budget(Cost INT NOT NULL, Item VARCHAR(30), PRIMARY KEY(Cost))");
+                        ContentValues values = new ContentValues();
+                        values.put("Cost", result);
+                        database.insert("Budget", null, values);
+                        database.close();
+                        dialog.dismiss();
+                    }
+                    catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "You did not enter an integer for cost.", Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                        ShowInputDialog();
+                    }
+                }
             }
         });
 
