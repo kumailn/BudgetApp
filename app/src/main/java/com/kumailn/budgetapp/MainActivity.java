@@ -84,11 +84,11 @@ public class MainActivity extends AppCompatActivity {
     int percent4 = 1;
     int percent5 = 1;
     String[] percents;
-    float category1sum;
-    float category2sum;
-    float category3sum;
-    float category4sum;
-    float category5sum;
+    float category1sum = 0;
+    float category2sum = 0;
+    float category3sum = 0;
+    float category4sum = 0;
+    float category5sum = 0;
 
 
     @Override
