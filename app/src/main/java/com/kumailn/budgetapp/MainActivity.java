@@ -395,7 +395,7 @@ public class MainActivity extends AppCompatActivity {
                            values.put("PurchaseID", ID);
                            values.put("Cost", result);
                            values.put("Category", currentItemCategory);
-                           values.put("Item", item.getText().toString());
+                           values.put("Item", item.getText().toString()); //new item
                            values.put("Date", formattedDate);
                            if(checkBox.isChecked())
                                values.put("Credit", 1);
