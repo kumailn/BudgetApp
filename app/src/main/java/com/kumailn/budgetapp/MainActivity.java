@@ -394,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
                            ContentValues values = new ContentValues();
                            values.put("PurchaseID", ID);
                            values.put("Cost", result);
-                           values.put("Item", item.getText().toString());
+                           values.put("Item", currentItemCategory);
                            values.put("Date", formattedDate);
                            if(checkBox.isChecked())
                                values.put("Credit", 1);
