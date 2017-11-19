@@ -134,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
                 if(!cost.getText().toString().isEmpty()) //checks if the user has entered anything
                 {
                     try{
-                        int result = Integer.parseInt(cost.getText().toString());
+                        float result = Float.valueOf(cost.getText().toString());
+                        result = result * 100;
+                        int cost = (int)result;
                         String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
                         SQLiteDatabase database = openOrCreateDatabase("data", MODE_PRIVATE, null);
                         database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost INT, Item VARCHAR(30), Date VARCHAR(10), Total INT, PRIMARY KEY(PurchaseID))");
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                            Log.e("purchaseID is ", Integer.toString(ID++));
                            ContentValues values = new ContentValues();
                            values.put("PurchaseID", ID);
-                           values.put("Cost", result);
+                           values.put("Cost", cost);
                            values.put("Item", item.getText().toString());
                            values.put("Date", formattedDate);
                            values.put("Total", 56);
