@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -18,8 +19,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,12 +31,31 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.facebook.stetho.Stetho;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     String[] convertResult = new String[1];
@@ -42,16 +64,42 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog dialog;
     EditText cost;
+
+    private float[] yData = {25.3f, 10.6f, 66.76f, 44.32f, 46.01f, 16.89f, 23.9f};
+    private String[] xData = {"Mitch", "Jessica" , "Mohammad" , "Kelsey", "Sam", "Robert", "Ashley"};
+    double[] cadToUSD = {0.7960,0.7947,0.7946,0.7950,0.7958,0.7984,0.8019,0.8012,0.8012,0.7999,0.7980,0.7924,0.7978,0.8075,0.8066,0.8066,0.8059,0.8082,0.8188,0.8226,0.8241,0.8226,0.8223,0.8246,0.8221,0.8186,0.8196,0.8191,0.8199};
+
+    PieChart pieChart ;
+    ArrayList<Entry> entries ;
+    ArrayList<Entry> entriesTwo ;
+    ArrayList<String> PieEntryLabels ;
+    PieDataSet pieDataSet ;
+    PieData pieData ;
+    SharedPreferences sharedPreferences;
+    Float currentBudgetLeft;
+    Float totalMonthlyBudget;
+    TextView currentBudgetView;
+    LineChart chart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Stetho.initializeWithDefaults(this);
+        sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
         Intent i = new Intent(getApplicationContext(), LocationService.class);
         //Make sure permissions are granted
         startService(i);
         //d
 
-        SharedPreferences sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
+        sharedPreferences.edit().putFloat("Budget", 0).apply();
+        sharedPreferences.edit().putFloat("TotalBudget", 1000).apply();
+
+
+        currentBudgetLeft = sharedPreferences.getFloat("Budget", 0);
+        totalMonthlyBudget = sharedPreferences.getFloat("TotalBudget", 0);
+
+
         Integer value1 = sharedPreferences.getInt("Num", 0);
         if(value1 == 0){
             sharedPreferences.edit().putInt("Num", value1++).apply();
@@ -67,6 +115,58 @@ public class MainActivity extends AppCompatActivity {
                 ShowInputDialog();
             }
         });
+
+
+        pieChart = (PieChart) findViewById(R.id.pieChart);
+
+        entries = new ArrayList<>();
+
+        PieEntryLabels = new ArrayList<String>();
+
+        AddValuesToPIEENTRY();
+
+        AddValuesToPieEntryLabels();
+
+        pieDataSet = new PieDataSet(entries, "");
+
+        pieData = new PieData(PieEntryLabels, pieDataSet);
+
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        pieChart.setData(pieData);
+
+        pieChart.animateY(3000);
+
+
+        //line chart
+        LineChart mChart = findViewById(R.id.lineChart);
+        Integer[] dataObjects = new Integer[10];
+        for(int ii = 0; ii < 9; ii++){
+            dataObjects[ii] = ii;
+        }
+
+    }
+
+    public void AddValuesToPIEENTRY(){
+
+        entries.add(new BarEntry(2f, 0));
+        entries.add(new BarEntry(4f, 1));
+        entries.add(new BarEntry(6f, 2));
+        entries.add(new BarEntry(8f, 3));
+        entries.add(new BarEntry(7f, 4));
+        entries.add(new BarEntry(3f, 5));
+
+    }
+
+    public void AddValuesToPieEntryLabels(){
+
+        PieEntryLabels.add("January");
+        PieEntryLabels.add("February");
+        PieEntryLabels.add("March");
+        PieEntryLabels.add("April");
+        PieEntryLabels.add("May");
+        PieEntryLabels.add("June");
+
     }
 
     @Override
@@ -136,14 +236,24 @@ public class MainActivity extends AppCompatActivity {
                 {
                     try{
                         float result = Float.valueOf(cost.getText().toString());
-                        result = result * 100;
-                        int cost = (int)result;
-                        String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-                        SQLiteDatabase database = openOrCreateDatabase("data", MODE_PRIVATE, null);
-                        database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost INT, Item VARCHAR(30), Date VARCHAR(10), Total INT, PRIMARY KEY(PurchaseID))");
+                        currentBudgetLeft = currentBudgetLeft - result;
+                        sharedPreferences.edit().putFloat("Budget", currentBudgetLeft).apply();
+                        currentBudgetView = findViewById(R.id.text_spent);
+                        currentBudgetView.setText(String.valueOf(currentBudgetLeft));
 
+
+                        String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+                        SQLiteDatabase database = openOrCreateDatabase("dataV4", MODE_PRIVATE, null);
+                        database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost FLOAT, Item VARCHAR(30), Date VARCHAR(10), Total FLOAT, PRIMARY KEY(PurchaseID))");
                         try{
                            Cursor c = database.rawQuery("SELECT Max(PurchaseID) AS ID FROM TotalBudget", null);
+
+                           Cursor b = database.rawQuery("SELECT Min(Total) AS budget FROM TotalBudget", null);
+                           b.moveToFirst();
+                           float minBudget = b.getFloat(0);
+                           minBudget = minBudget - result;
+
+
 
                            int purchaseID = c.getColumnIndex("ID");
                            c.moveToFirst();
@@ -153,12 +263,18 @@ public class MainActivity extends AppCompatActivity {
                            Log.e("purchaseID is ", Integer.toString(ID++));
                            ContentValues values = new ContentValues();
                            values.put("PurchaseID", ID);
-                           values.put("Cost", cost);
+                           values.put("Cost", result);
                            values.put("Item", item.getText().toString());
                            values.put("Date", formattedDate);
-                           values.put("Total", 56);
+                           values.put("Total", minBudget);
                            database.insert("TotalBudget", null, values);
-                       }
+                           Cursor a = database.rawQuery("SELECT Sum(Cost) AS AA FROM TotalBudget", null);
+                           int total = a.getColumnIndex("AA");
+                           a.moveToFirst();
+                           float totalN = a.getFloat(total);
+                           Log.e("total is: ", Float.toString(totalN)); //WHERE THE TOTAL IS
+
+                        }
                        catch(Exception e)
                        {
                            Log.d("purchaseID is 0.", null);
@@ -180,6 +296,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
+
 
 
 }

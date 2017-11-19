@@ -70,9 +70,9 @@
                     android:layout_weight="1" />
 
                 <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/chart1"
+                    android:id="@+id/pieChart"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="300dp"
                     android:layout_above="@+id/seekBar1" />
 
                 <Space
@@ -131,13 +131,14 @@
                 android:layout_height="24dp" />
 
             <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/chart"
+                android:id="@+id/lineChart"
                 android:visibility="gone"
                 android:layout_marginTop="24dp"
                 android:layout_width="match_parent"
                 android:layout_height="500dp" />
 
         </LinearLayout>
+
     </ScrollView>
 
 
