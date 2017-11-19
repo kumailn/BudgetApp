@@ -242,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         //line chart
-        LineChart mChart = findViewById(R.id.lineChart);
         Integer[] dataObjects = new Integer[10];
         for(int ii = 0; ii < 9; ii++){
             dataObjects[ii] = ii;
