@@ -262,7 +262,24 @@ public class MainActivity extends AppCompatActivity {
     pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
         @Override
         public void onValueSelected(Entry entry, int i, Highlight highlight) {
-            pieChart.setCenterText("Spent " + String.valueOf(categorysum[i]) + " Out of ");
+            int percentVal = 0;
+
+            switch(entry.getXIndex()){
+                case 0:
+                    percentVal = percent1;
+                case 1:
+                    percentVal = percent2;
+                case 2:
+                    percentVal = percent3;
+                case 3:
+                    percentVal = percent4;
+                case 4:
+                    percentVal = percent5;
+
+
+            }
+            Log.e("i selected: ", String.valueOf(i) + " " + entry.getXIndex());
+            pieChart.setCenterText("Spent " + String.valueOf(categorysum[i]) + " Out of \n" + ((percentVal/100) * totalMonthlyBudget) );
         }
 
         @Override
@@ -286,6 +303,9 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.settings){
 
             Toast.makeText(getApplicationContext(), "Click Works", Toast.LENGTH_SHORT).show();
+        }
+        else if(item.getItemId() == R.id.about){
+            startActivity(new Intent(getApplicationContext(), Activity4.class));
         }
         return super.onOptionsItemSelected(item);
     }
@@ -489,4 +509,6 @@ public class MainActivity extends AppCompatActivity {
         startService(i);
 
     }*/
+
+
 }

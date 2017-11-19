@@ -11,7 +11,6 @@ public class Activity4 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_4);
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
                 .setImage(R.drawable.about_icon_github)
@@ -26,5 +25,8 @@ public class Activity4 extends AppCompatActivity {
                 .addGitHub("medyo")
                 .addInstagram("medyo80")
                 .create();
+        setContentView(aboutPage);
+
+
     }
 }
