@@ -430,7 +430,6 @@ public class MainActivity extends AppCompatActivity {
                        catch(Exception e)
                        {
                            Log.d("purchaseID is 0.", null);
-                           database.execSQL("INSERT INTO TotalBudget(PurchaseID, Cost, Item, Date, Total) VALUES(0, 45,'hello', 'wow', 98)");
                        }
 
                         database.close();
