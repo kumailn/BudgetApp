@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -266,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
         View view = getLayoutInflater().inflate(R.layout.dialog_view, null);
         final EditText cost = (EditText) view.findViewById(R.id.costID); //this is the cost
         final EditText item = (EditText) view.findViewById(R.id.itemDescriptionID);
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         Button submit = (Button) view.findViewById(R.id.submitButton);
 
         alertDialogBuilder.setView(view); //Set the view to the Dialog View
@@ -293,14 +295,9 @@ public class MainActivity extends AppCompatActivity {
 
                         String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
                         SQLiteDatabase database = openOrCreateDatabase("dataV4", MODE_PRIVATE, null);
-                        database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost FLOAT, Item VARCHAR(30), Date VARCHAR(10), Total FLOAT, PRIMARY KEY(PurchaseID))");
+                        database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost FLOAT, Item VARCHAR(30), Date VARCHAR(10), Credit BIT, PRIMARY KEY(PurchaseID))");
                         try{
                            Cursor c = database.rawQuery("SELECT Max(PurchaseID) AS ID FROM TotalBudget", null);
-
-                           Cursor b = database.rawQuery("SELECT Min(Total) AS budget FROM TotalBudget", null);
-                           b.moveToFirst();
-                           float minBudget = b.getFloat(0);
-                           minBudget = minBudget - result;
 
 
 
@@ -315,7 +312,11 @@ public class MainActivity extends AppCompatActivity {
                            values.put("Cost", result);
                            values.put("Item", item.getText().toString());
                            values.put("Date", formattedDate);
-                           values.put("Total", minBudget);
+                           if(checkBox.isChecked())
+                               values.put("Credit", 1);
+                           else
+                               values.put("Credit",0);
+
                            database.insert("TotalBudget", null, values);
                            Cursor a = database.rawQuery("SELECT Sum(Cost) AS AA FROM TotalBudget", null);
                            int total = a.getColumnIndex("AA");

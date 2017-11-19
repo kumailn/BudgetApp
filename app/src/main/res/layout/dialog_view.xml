@@ -48,16 +48,25 @@
             android:hint="Optional Item Description"
             android:textStyle="italic" />
 
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/itemDescriptionID"
+            android:text="Did you use credit?" />
+
         <Button
             android:id="@+id/submitButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/itemDescriptionID"
+            android:layout_below="@id/checkBox"
             android:background="@color/colorAccent"
             android:text="Submit"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
     </RelativeLayout>
+
+
 
 </LinearLayout>
