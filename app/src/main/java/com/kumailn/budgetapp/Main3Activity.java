@@ -20,6 +20,17 @@ public class Main3Activity extends AppCompatActivity {
         Button buttonDone = (findViewById(R.id.buttonDone));
         final EditText editTextTotalMonthlyBudget = findViewById(R.id.edittextTotalMonthlyBudget);
         EditText editTextInterest = findViewById(R.id.edittextInterest);
+        final EditText editTextCategory1 = findViewById(R.id.edittextCategory1);
+        final EditText editTextCategory2 = findViewById(R.id.edittextCategory2);
+        final EditText editTextCategory3 = findViewById(R.id.edittextCategory3);
+        final EditText editTextCategory4 = findViewById(R.id.edittextCategory4);
+        final EditText editTextCategory5 = findViewById(R.id.edittextCategory5);
+
+        final EditText editTextPercent1 = findViewById(R.id.edittextCategoryPercent1);
+        final EditText editTextPercent2 = findViewById(R.id.edittextCategoryPercent2);
+        final EditText editTextPercent3 = findViewById(R.id.edittextCategoryPercent3);
+        final EditText editTextPercent4 = findViewById(R.id.edittextCategoryPercent4);
+        final EditText editTextPercent5 = findViewById(R.id.edittextCategoryPercent5);
 
         final SharedPreferences sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
 
@@ -32,10 +43,22 @@ public class Main3Activity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                startActivity(new Intent(getApplicationContext(), MainActivity.class).putExtra("TotalBudget", Float.valueOf(String.valueOf(editTextTotalMonthlyBudget.getText()))));
+                Intent backToMain = new Intent(getApplicationContext(), MainActivity.class)
+                        .putExtra("TotalBudget", Float.valueOf(String.valueOf(editTextTotalMonthlyBudget.getText())))
+                        .putExtra("Category1", editTextCategory1.getText().toString())
+                        .putExtra("Percent1", editTextPercent1.getText().toString())
+                        .putExtra("Percent2", editTextPercent2.getText().toString())
+                        .putExtra("Category2", editTextCategory2.getText().toString())
+                        .putExtra("Percent3", editTextPercent3.getText().toString())
+                        .putExtra("Category3", editTextCategory3.getText().toString())
+                        .putExtra("Percent4", editTextPercent4.getText().toString())
+                        .putExtra("Category4", editTextCategory4.getText().toString())
+                        .putExtra("Percent5", editTextPercent5.getText().toString())
+                        .putExtra("Category5", editTextCategory5.getText().toString());
+
+                startActivity(backToMain);
             }
         });
-        //csajsk
     }
 
 }

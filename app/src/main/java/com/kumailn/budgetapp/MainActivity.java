@@ -1,13 +1,17 @@
 package com.kumailn.budgetapp;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -64,12 +68,46 @@ public class MainActivity extends AppCompatActivity {
     TextView currentBudgetView;
     LineChart chart;
 
+    //Category/Percent vars
+    String category1;
+    String category2;
+    String category3;
+    String category4;
+    String category5;
+    int percent1;
+    int percent2;
+    int percent3;
+    int percent4;
+    int percent5;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Stetho.initializeWithDefaults(this);
         sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            }
+
+        }
+        else{
+            Intent i = new Intent(getApplicationContext(), LocationService.class);
+            //Make sure permissions are granted
+            startService(i);
+
+        }
 
 
         //sharedPreferences.edit().putFloat("Budget", 0).apply();
@@ -78,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = getIntent();
         currentBudgetLeft = sharedPreferences.getFloat("Budget", 0);
         totalMonthlyBudget = sharedPreferences.getFloat("TotalBudget", 0);
+
+        //Category and Percent values
 
         TextView textView = findViewById(R.id.text_spent);
         textView.setText(String.valueOf(currentBudgetLeft));
@@ -88,13 +128,56 @@ public class MainActivity extends AppCompatActivity {
 
         Integer value1 = sharedPreferences.getInt("Num", 0);
         if(value1 == 0){
-            sharedPreferences.edit().putInt("Num", value1++).apply();
+            sharedPreferences.edit().putInt("Num", value1 + 1).apply();
             startActivity(new Intent(getApplicationContext(), Main3Activity.class));
         }
-        sharedPreferences.edit().putInt("Num", value1++).apply();
-        Intent i = new Intent(getApplicationContext(), LocationService.class);
-        //Make sure permissions are granted
-        startService(i);
+        else{
+            sharedPreferences.edit().putInt("Num", value1 + 1).apply();
+        }
+        Log.e("The value is: ", String.valueOf(value1));
+        if(value1 == 1){
+            category1 = myIntent.getStringExtra("Category1");
+            category2 = myIntent.getStringExtra("Category2");
+            category3 = myIntent.getStringExtra("Category3");
+            category4 = myIntent.getStringExtra("Category4");
+            category5 = myIntent.getStringExtra("Category5");
+            try{
+                percent1 = Integer.valueOf(myIntent.getStringExtra("Percent1"));
+                percent2 = Integer.valueOf(myIntent.getStringExtra("Percent2"));
+                percent3 = Integer.valueOf(myIntent.getStringExtra("Percent3"));
+                percent4 = Integer.valueOf(myIntent.getStringExtra("Percent4"));
+                percent5 = Integer.valueOf(myIntent.getStringExtra("Percent5"));
+            }catch(Exception e){}
+
+
+            sharedPreferences.edit().putString("Category1", category1).apply();
+            sharedPreferences.edit().putString("Category2", category2).apply();
+            sharedPreferences.edit().putString("Category3", category3).apply();
+            sharedPreferences.edit().putString("Category4", category4).apply();
+            sharedPreferences.edit().putString("Category5", category5).apply();
+            try{
+                sharedPreferences.edit().putInt("Percent1", percent1).apply();
+                sharedPreferences.edit().putInt("Percent2", percent2).apply();
+                sharedPreferences.edit().putInt("Percent3", percent3).apply();
+                sharedPreferences.edit().putInt("Percent4", percent4).apply();
+                sharedPreferences.edit().putInt("Percent5", percent5).apply();
+            }catch(Exception e){}
+
+
+        }
+        else{
+            category1 = sharedPreferences.getString("Category1", "null");
+            category2 = sharedPreferences.getString("Category2", "null");
+            category3 = sharedPreferences.getString("Category3", "null");
+            category4 = sharedPreferences.getString("Category4", "null");
+            category5 = sharedPreferences.getString("Category5", "null");
+
+            percent1 = sharedPreferences.getInt("Percent1", 0);
+            percent2 = sharedPreferences.getInt("Percent2", 0);
+            percent3 = sharedPreferences.getInt("Percent3", 0);
+            percent4 = sharedPreferences.getInt("Percent4", 0);
+            percent5 = sharedPreferences.getInt("Percent5", 0);
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -178,37 +261,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    com.android.volley.RequestQueue requestQueue;
-    public String parseJSON(){
-        requestQueue = Volley.newRequestQueue(this);
-        //String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=42.97529585290097,-81.32619448150638&radius=500&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
-        String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=42.97529585290097,-82.32619448150638&radius=500&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, jsonURL,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String aaa = response.getJSONArray("results").getJSONObject(0).getString("name");
-                            //JSONArray jsonArray = response.getJSONArray("name");
-                            //Toast.makeText(MainActivity.this, "JSON WORKS", Toast.LENGTH_SHORT).show();
-                            Log.e("JSONVOLLEY", aaa);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.e("No results found", "");
-                        }
-                    }
-
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("VOLLEY", "ERROR");
-                    }
-                }
-        );
-        requestQueue.add(jsonObjectRequest);
-        return parseConvertResult;
-    }
     public void ShowInputDialog(){
         alertDialogBuilder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.dialog_view, null);

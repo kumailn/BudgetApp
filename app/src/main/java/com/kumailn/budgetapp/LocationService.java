@@ -31,6 +31,7 @@ import org.json.JSONObject;
 public class LocationService extends Service {
     String ammountLeft = "0";
     String myCurrentLocation = "lol";
+    String APIKEY = "AIzaSyCJeTSV92YjuUI0zGN20Wr2UoHxJCyQn8U";
     public LocationService() {
     }
 
@@ -83,7 +84,7 @@ public class LocationService extends Service {
         requestQueue = Volley.newRequestQueue(this);
         //String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=42.97529585290097,-81.32619448150638&radius=500&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
         //String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=42.97529585290097,-81.32619448150638&radius=500&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
-        String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=200&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
+        String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + lat + "," + lon + "&radius=200&type=store&keyword=store&key=" + APIKEY;
         //String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" +lat+ ","+lon+"&rankby=distance&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
         Log.e("jsonURL", jsonURL);
         final String[] aaa = {""};
