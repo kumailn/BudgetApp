@@ -1,5 +1,6 @@
 package com.kumailn.budgetapp;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -87,18 +88,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Stetho.initializeWithDefaults(this);
         sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
-        Intent i = new Intent(getApplicationContext(), LocationService.class);
-        //Make sure permissions are granted
-        startService(i);
-        //d
-
-        sharedPreferences.edit().putFloat("Budget", 0).apply();
-        sharedPreferences.edit().putFloat("TotalBudget", 1000).apply();
 
 
+
+
+        //sharedPreferences.edit().putFloat("Budget", 0).apply();
+        //sharedPreferences.edit().putFloat("TotalBudget", 1000).apply();
+
+        Intent myIntent = getIntent();
         currentBudgetLeft = sharedPreferences.getFloat("Budget", 0);
         totalMonthlyBudget = sharedPreferences.getFloat("TotalBudget", 0);
 
+        TextView textView = findViewById(R.id.text_spent);
+        textView.setText(String.valueOf(currentBudgetLeft));
+
+        if(!String.valueOf(myIntent.getFloatExtra("TotalBudget", (float)0.0)).equals("0.0")){
+            textView.setText(String.valueOf(String.valueOf(myIntent.getFloatExtra("TotalBudget", (float)0.0))));
+        }
 
         Integer value1 = sharedPreferences.getInt("Num", 0);
         if(value1 == 0){
@@ -106,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Main3Activity.class));
         }
         sharedPreferences.edit().putInt("Num", value1++).apply();
+        Intent i = new Intent(getApplicationContext(), LocationService.class);
+        //Make sure permissions are granted
+        startService(i);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -235,8 +244,14 @@ public class MainActivity extends AppCompatActivity {
                 if(!cost.getText().toString().isEmpty()) //checks if the user has entered anything
                 {
                     try{
+                        Integer value1 = sharedPreferences.getInt("Num", 0);
+                        totalMonthlyBudget = sharedPreferences.getFloat("TotalBudget", 0);
                         float result = Float.valueOf(cost.getText().toString());
-                        currentBudgetLeft = currentBudgetLeft - result;
+                        if(value1 == 1){
+                            currentBudgetLeft = totalMonthlyBudget - result;
+                        }else{
+                            currentBudgetLeft = currentBudgetLeft - result;
+                        }
                         sharedPreferences.edit().putFloat("Budget", currentBudgetLeft).apply();
                         currentBudgetView = findViewById(R.id.text_spent);
                         currentBudgetView.setText(String.valueOf(currentBudgetLeft));
@@ -298,9 +313,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+        setContentView(R.layout.activity_main);
+        sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
+        TextView text = findViewById(R.id.text_spent);
+
+        //sharedPreferences.edit().putFloat("Budget", 0).apply();
+        //sharedPreferences.edit().putFloat("TotalBudget", 1000).apply();
 
 
+        currentBudgetLeft = sharedPreferences.getFloat("Budget", 0);
+        totalMonthlyBudget = sharedPreferences.getFloat("TotalBudget", 0);
+        Log.e(String.valueOf(currentBudgetLeft), "current money");
+        text.setText(String.valueOf(currentBudgetLeft));
 
 
+        Intent i = new Intent(getApplicationContext(), LocationService.class);
+        //Make sure permissions are granted
+        startService(i);
 
+    }*/
 }

@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -94,6 +95,23 @@ public class LocationService extends Service {
                             //JSONArray jsonArray = response.getJSONArray("name");
                             //Toast.makeText(MainActivity.this, "JSON WORKS", Toast.LENGTH_SHORT).show();
                             Log.e("JSONVOLLEY", aaa[0]);
+
+
+
+                            PowerManager pm = (PowerManager)getApplicationContext().getSystemService(Context.POWER_SERVICE);
+                            boolean isScreenOn = pm.isScreenOn();
+                            Log.e("screen on..........", ""+isScreenOn);
+                            if(isScreenOn==false)
+                            {
+                                PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MyLock");
+                                wl.acquire(10000);
+                                PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"MyCpuLock");
+
+                                wl_cpu.acquire(10000);
+                            }
+
+
+
                             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
                             Intent intent_main = new Intent(getApplicationContext(), Main2Activity.class);
 

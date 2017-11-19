@@ -48,7 +48,7 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/budget"
+                        android:id="@+id/edittextTotalMonthlyBudget"
                         android:layout_width="128dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
@@ -68,7 +68,7 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/interest"
+                        android:id="@+id/edittextInterest"
                         android:layout_width="128dp"
                         android:layout_height="wrap_content"
                         android:text="Optional"
@@ -261,12 +261,12 @@
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/buttonDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorPrimary"
-                android:text="Button"
+                android:text="DONE"
                 android:textAlignment="center"
                 android:textColor="@android:color/white" />
 
