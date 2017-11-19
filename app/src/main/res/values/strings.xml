@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BudgetApp</string>
+    <string name="text_rem_string">$0.00</string>
+    <string name="add_widget">Add widget</string>
 </resources>

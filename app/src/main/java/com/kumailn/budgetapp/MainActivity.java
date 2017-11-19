@@ -1,6 +1,8 @@
 package com.kumailn.budgetapp;
 
 import android.Manifest;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -131,6 +133,11 @@ public class MainActivity extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.text_spent);
         textView.setText(String.valueOf(currentBudgetLeft));
+        Intent intent = new Intent(getApplicationContext(), BudgetWidget.class);
+        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), BudgetWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        sendBroadcast(intent);
 
         if(!String.valueOf(myIntent.getFloatExtra("TotalBudget", (float)0.0)).equals("0.0")){
             textView.setText(String.valueOf(String.valueOf(myIntent.getFloatExtra("TotalBudget", (float)0.0))));
@@ -312,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         sharedPreferences.edit().putFloat("Budget", currentBudgetLeft).apply();
                         currentBudgetView = findViewById(R.id.text_spent);
-                        currentBudgetView.setText(String.valueOf(currentBudgetLeft));
+                        currentBudgetView.setText(String.valueOf("$"+String.format("%0.2f",currentBudgetLeft)));
 
                         String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
                         SQLiteDatabase database = openOrCreateDatabase("dataV4", MODE_PRIVATE, null);

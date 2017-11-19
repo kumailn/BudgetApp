@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -25,9 +25,19 @@
             android:name=".LocationService"
             android:enabled="true"
             android:exported="true"
-            android:process=".locationService"></service>
+            android:process=".locationService" />
 
-        <activity android:name=".Main3Activity"></activity>
+        <activity android:name=".Main3Activity" />
+
+        <receiver android:name=".BudgetWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/budget_widget_info" />
+        </receiver>
     </application>
 
 </manifest>

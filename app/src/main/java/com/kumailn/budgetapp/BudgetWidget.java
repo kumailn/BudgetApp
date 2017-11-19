@@ -3,27 +3,20 @@ package com.kumailn.budgetapp;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.widget.RemoteViews;
-
-import org.w3c.dom.ProcessingInstruction;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class BudgetWidget extends AppWidgetProvider {
 
-
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-
-        SharedPreferences sharedPreferences = context.getSharedPreferences("myData", Context.MODE_PRIVATE);
-        Float currentBudgetLeft = sharedPreferences.getFloat("Budget", 0);
-        CharSequence widgetText = "$" + String.format("%.2f",currentBudgetLeft);
+        CharSequence widgetText = context.getString(R.string.text_rem_string);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.budget_widget);
-        views.setTextViewText(R.id.budgetWidgetRem, widgetText);
+        views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

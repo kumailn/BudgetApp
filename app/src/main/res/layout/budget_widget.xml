@@ -1,31 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:background="@android:color/background_light"
-    android:gravity="center"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
     android:padding="@dimen/widget_margin">
 
-
     <TextView
-        android:id="@+id/budgetWidgetRem"
+        android:id="@+id/appwidget_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:background="@android:color/transparent"
-        android:backgroundTint="@android:color/transparent"
-        android:backgroundTintMode="src_in"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="#ffffff"
+        android:contentDescription="@string/text_rem_string"
         android:text="@string/text_rem_string"
-        android:textAlignment="center"
-        android:textAppearance="@android:style/TextAppearance.Material.Menu"
         android:textColor="@color/colorPrimary"
-        android:textSize="48sp" />
+        android:textSize="24sp"
+        android:textStyle="bold|italic" />
 
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-</LinearLayout>
+</RelativeLayout>
