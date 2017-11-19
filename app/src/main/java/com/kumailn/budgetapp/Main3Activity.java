@@ -15,17 +15,9 @@ public class Main3Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
-        Button button = (Button) findViewById(R.id.signupButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Signup();
-            }
-        });
     }
 
     public void Signup()
     {
-        EditText category
     }
 }

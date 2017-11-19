@@ -3,6 +3,7 @@ package com.kumailn.budgetapp;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
@@ -46,7 +47,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent i = new Intent(getApplicationContext(), LocationService.class);
-        //startService(i);
+        //Make sure permissions are granted
+        startService(i);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
+        Integer value1 = sharedPreferences.getInt("Num", 0);
+        if(value1 == 0){
+            sharedPreferences.edit().putInt("Num", value1++).apply();
+            startActivity(new Intent(getApplicationContext(), Main3Activity.class));
+        }
+        sharedPreferences.edit().putInt("Num", value1++).apply();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
