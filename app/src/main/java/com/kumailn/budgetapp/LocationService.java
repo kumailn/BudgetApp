@@ -74,7 +74,7 @@ public class LocationService extends Service {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
         return START_STICKY;
-    }
+    }//d
 
     com.android.volley.RequestQueue requestQueue;
     public String parseJSON(String lat, String lon){
