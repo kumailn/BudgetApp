@@ -412,6 +412,19 @@ public class MainActivity extends AppCompatActivity {
                            float totalN = a.getFloat(total);
                            Log.e("total is: ", Float.toString(totalN)); //WHERE THE TOTAL IS
 
+                            Cursor u = database.rawQuery("SELECT * FROM TotalBudget", null);
+                            int itemID = u.getColumnIndex("Item");
+                            int categoryID = u.getColumnIndex("Category");
+                            int costID = u.getColumnIndex("Cost");
+                            try {
+                                while (u.moveToNext()) {
+                                    allItemNames.add(u.getString(itemID));
+                                    allItemCategories.add(u.getString(categoryID));
+                                    allItemPrices.add(Float.toString(u.getFloat(costID)));
+                                }
+                            } finally {
+                                u.close();
+                            }
                             if(category1 != null)
                             {
                                 String[] columns = { "Cost" };
