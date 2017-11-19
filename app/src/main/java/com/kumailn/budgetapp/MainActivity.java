@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
             Log.e("i selected: ", String.valueOf(i) + " " + entry.getXIndex());
-            pieChart.setCenterText("Spent " + String.valueOf(categorysum[i]) + " Out of \n" + ((percentVal/100) * totalMonthlyBudget) );
+            pieChart.setCenterText("Spent " + String.valueOf(categorysum[entry.getXIndex()]) + " Out of \n" + ((percentVal/100) * totalMonthlyBudget) );
         }
 
         @Override
