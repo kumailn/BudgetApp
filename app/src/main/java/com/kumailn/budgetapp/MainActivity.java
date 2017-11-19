@@ -98,6 +98,10 @@ public class MainActivity extends AppCompatActivity {
 
     String currentItemCategory = "null";
 
+    ArrayList<String> allItemNames;
+    ArrayList<String> allItemPrices;
+    ArrayList<String> allItemCategories;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
