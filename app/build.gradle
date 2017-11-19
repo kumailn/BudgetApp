@@ -29,6 +29,8 @@ dependencies {
     compile 'com.android.support:design:26.1.0'
     implementation files('libs/mpandroidchartlibrary-2-2-4.jar')
     compile 'com.facebook.stetho:stetho:1.5.0'
+    compile 'com.github.medyo:android-about-page:1.2.2'
 }
+
 
 
