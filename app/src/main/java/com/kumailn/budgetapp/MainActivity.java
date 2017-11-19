@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
     float category3sum = 0;
     float category4sum = 0;
     float category5sum = 0;
+    float[] categorysum = new float[5];
 
 
     @Override
@@ -358,7 +359,7 @@ public class MainActivity extends AppCompatActivity {
                                     cursor.close();
                                 }
                                 Log.e("Total cost is: ", Float.toString(cat1));
-                                category1sum = cat1;
+                                categorysum[0] = cat1;
                             }
                             if(category2 != null)
                             {
@@ -374,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                                     cursor.close();
                                 }
                                 Log.e("Total cost is: ", Float.toString(cat2));
-                                category2sum = cat2;
+                                categorysum[1] = cat2;
                             }
                             if(category3 != null)
                             {
@@ -390,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
                                     cursor.close();
                                 }
                                 Log.e("Total cost is: ", Float.toString(cat3));
-                                category3sum = cat3;
+                                categorysum[2] = cat3;
                             }
                             if(category4 != null)
                             {
@@ -406,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
                                     cursor.close();
                                 }
                                 Log.e("Total cost is: ", Float.toString(cat4));
-                                category4sum = cat4;
+                                categorysum[3] = cat4;
                             }
                             if(category5 != null)
                             {
@@ -422,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
                                     cursor.close();
                                 }
                                 Log.e("Total cost is: ", Float.toString(cat5));
-                                category5sum = cat5;
+                                categorysum[4] = cat5;
                             }
 
                         }
