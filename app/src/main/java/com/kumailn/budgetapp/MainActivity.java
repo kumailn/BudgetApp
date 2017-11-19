@@ -84,7 +84,11 @@ public class MainActivity extends AppCompatActivity {
     int percent4 = 1;
     int percent5 = 1;
     String[] percents;
-
+    float category1sum;
+    float category2sum;
+    float category3sum;
+    float category4sum;
+    float category5sum;
 
 
     @Override
@@ -339,6 +343,87 @@ public class MainActivity extends AppCompatActivity {
                            a.moveToFirst();
                            float totalN = a.getFloat(total);
                            Log.e("total is: ", Float.toString(totalN)); //WHERE THE TOTAL IS
+
+                            if(category1 != null)
+                            {
+                                String[] columns = { "Cost" };
+                                String[] whereArguments = {category1};
+                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                float cat1 = 0;
+                                try {
+                                    while (cursor.moveToNext()) {
+                                        cat1 = cat1 + cursor.getFloat(0);
+                                    }
+                                } finally {
+                                    cursor.close();
+                                }
+                                Log.e("Total cost is: ", Float.toString(cat1));
+                                category1sum = cat1;
+                            }
+                            if(category2 != null)
+                            {
+                                String[] columns = { "Cost" };
+                                String[] whereArguments = {category2};
+                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                float cat2 = 0;
+                                try {
+                                    while (cursor.moveToNext()) {
+                                        cat2 = cat2 + cursor.getFloat(0);
+                                    }
+                                } finally {
+                                    cursor.close();
+                                }
+                                Log.e("Total cost is: ", Float.toString(cat2));
+                                category2sum = cat2;
+                            }
+                            if(category3 != null)
+                            {
+                                String[] columns = { "Cost" };
+                                String[] whereArguments = {category3};
+                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                float cat3 = 0;
+                                try {
+                                    while (cursor.moveToNext()) {
+                                        cat3 = cat3 + cursor.getFloat(0);
+                                    }
+                                } finally {
+                                    cursor.close();
+                                }
+                                Log.e("Total cost is: ", Float.toString(cat3));
+                                category3sum = cat3;
+                            }
+                            if(category4 != null)
+                            {
+                                String[] columns = { "Cost" };
+                                String[] whereArguments = {category4};
+                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                float cat4 = 0;
+                                try {
+                                    while (cursor.moveToNext()) {
+                                        cat4 = cat4 + cursor.getFloat(0);
+                                    }
+                                } finally {
+                                    cursor.close();
+                                }
+                                Log.e("Total cost is: ", Float.toString(cat4));
+                                category4sum = cat4;
+                            }
+                            if(category5 != null)
+                            {
+                                String[] columns = { "Cost" };
+                                String[] whereArguments = {category5};
+                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                float cat5 = 0;
+                                try {
+                                    while (cursor.moveToNext()) {
+                                        cat5 = cat5 + cursor.getFloat(0);
+                                    }
+                                } finally {
+                                    cursor.close();
+                                }
+                                Log.e("Total cost is: ", Float.toString(cat5));
+                                category5sum = cat5;
+                            }
 
                         }
                        catch(Exception e)
