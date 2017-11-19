@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(getApplicationContext(), LocationService.class);
         //Make sure permissions are granted
         startService(i);
+        //d
 
         SharedPreferences sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
         Integer value1 = sharedPreferences.getInt("Num", 0);
