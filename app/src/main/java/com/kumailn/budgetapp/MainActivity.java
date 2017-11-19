@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
 
 
-
-
         //sharedPreferences.edit().putFloat("Budget", 0).apply();
         //sharedPreferences.edit().putFloat("TotalBudget", 1000).apply();
 
@@ -218,7 +216,6 @@ public class MainActivity extends AppCompatActivity {
         final EditText item = (EditText) view.findViewById(R.id.itemDescriptionID);
         Button submit = (Button) view.findViewById(R.id.submitButton);
 
-
         alertDialogBuilder.setView(view); //Set the view to the Dialog View
         dialog = alertDialogBuilder.create();
         dialog.show();
@@ -234,13 +231,13 @@ public class MainActivity extends AppCompatActivity {
                         float result = Float.valueOf(cost.getText().toString());
                         if(value1 == 1){
                             currentBudgetLeft = totalMonthlyBudget - result;
+                            sharedPreferences.edit().putInt("Num", value1 + 1).apply();
                         }else{
                             currentBudgetLeft = currentBudgetLeft - result;
                         }
                         sharedPreferences.edit().putFloat("Budget", currentBudgetLeft).apply();
                         currentBudgetView = findViewById(R.id.text_spent);
                         currentBudgetView.setText(String.valueOf(currentBudgetLeft));
-
 
                         String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
                         SQLiteDatabase database = openOrCreateDatabase("dataV4", MODE_PRIVATE, null);
