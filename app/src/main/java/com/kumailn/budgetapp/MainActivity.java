@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -28,11 +29,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +53,16 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder alertDialogBuilder;
     private AlertDialog dialog;
     EditText cost;
+
+    private float[] yData = {25.3f, 10.6f, 66.76f, 44.32f, 46.01f, 16.89f, 23.9f};
+    private String[] xData = {"Mitch", "Jessica" , "Mohammad" , "Kelsey", "Sam", "Robert", "Ashley"};
+    PieChart pieChart ;
+    ArrayList<Entry> entries ;
+    ArrayList<String> PieEntryLabels ;
+    PieDataSet pieDataSet ;
+    PieData pieData ;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
         //Make sure permissions are granted
         startService(i);
         //d
+
+
 
         SharedPreferences sharedPreferences = getSharedPreferences("myData", Context.MODE_PRIVATE);
         Integer value1 = sharedPreferences.getInt("Num", 0);
@@ -67,6 +90,50 @@ public class MainActivity extends AppCompatActivity {
                 ShowInputDialog();
             }
         });
+
+
+        pieChart = (PieChart) findViewById(R.id.pieChart);
+
+        entries = new ArrayList<>();
+
+        PieEntryLabels = new ArrayList<String>();
+
+        AddValuesToPIEENTRY();
+
+        AddValuesToPieEntryLabels();
+
+        pieDataSet = new PieDataSet(entries, "");
+
+        pieData = new PieData(PieEntryLabels, pieDataSet);
+
+        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+
+        pieChart.setData(pieData);
+
+        pieChart.animateY(3000);
+
+    }
+
+    public void AddValuesToPIEENTRY(){
+
+        entries.add(new BarEntry(2f, 0));
+        entries.add(new BarEntry(4f, 1));
+        entries.add(new BarEntry(6f, 2));
+        entries.add(new BarEntry(8f, 3));
+        entries.add(new BarEntry(7f, 4));
+        entries.add(new BarEntry(3f, 5));
+
+    }
+
+    public void AddValuesToPieEntryLabels(){
+
+        PieEntryLabels.add("January");
+        PieEntryLabels.add("February");
+        PieEntryLabels.add("March");
+        PieEntryLabels.add("April");
+        PieEntryLabels.add("May");
+        PieEntryLabels.add("June");
+
     }
 
     @Override
@@ -144,13 +211,19 @@ public class MainActivity extends AppCompatActivity {
 
                         try{
                            Cursor c = database.rawQuery("SELECT Max(PurchaseID) AS ID FROM TotalBudget", null);
+                           Cursor a = database.rawQuery("SELECT Sum(Cost) AS AA FROM TotalBudget", null);
+
+                            int total = a.getColumnIndex("AA");
+                           a.moveToFirst();
 
                            int purchaseID = c.getColumnIndex("ID");
                            c.moveToFirst();
                            Log.e("num is", Integer.toString(purchaseID));
                            Log.e("cursor is ", Integer.toString(c.getCount()));
                            int ID = c.getInt(purchaseID);
-                           Log.e("purchaseID is ", Integer.toString(ID++));
+                           int totalN = a.getInt(total);
+                            Toast.makeText(getApplicationContext(), totalN, Toast.LENGTH_SHORT).show();
+                            Log.e("purchaseID is ", Integer.toString(ID++));
                            ContentValues values = new ContentValues();
                            values.put("PurchaseID", ID);
                            values.put("Cost", cost);
@@ -180,6 +253,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
+
+
+
 
 
 }
