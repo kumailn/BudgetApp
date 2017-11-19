@@ -28,10 +28,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 public class LocationService extends Service {
     String ammountLeft = "0";
     String myCurrentLocation = "lol";
-    String APIKEY = "AIzaSyCJeTSV92YjuUI0zGN20Wr2UoHxJCyQn8U";
+    String APIKEY = "AIzaSyCP4X2k4KBTZw5uvwJ1LHB8uCK8D056a4k";
     public LocationService() {
     }
 
@@ -113,11 +115,14 @@ public class LocationService extends Service {
                                     wl_cpu.acquire(10000);
                                 }
 
+                                SharedPreferences sharedPreferences = getSharedPreferences("myData", MODE_PRIVATE);
+                                Float ammountLeft = sharedPreferences.getFloat("Budget", 0f);
                                 NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                Intent intent_main = new Intent(getApplicationContext(), Main2Activity.class);
+                                Intent intent_main = new Intent(getApplicationContext(), MainActivity.class);
+                                intent_main.putExtra("Notif", true);
 
                                 PendingIntent pendingIntentMain = PendingIntent.getActivity(getApplicationContext(), 0, intent_main, PendingIntent.FLAG_CANCEL_CURRENT);
-                                Notification notificationPopup = new Notification.Builder(getApplicationContext()).setContentTitle("You're at, " + aaa[0] + ", you have " + ammountLeft + " left to spend").setContentText("Click here")
+                                Notification notificationPopup = new Notification.Builder(getApplicationContext()).setContentTitle("You're at, " + aaa[0] + ", you have $" + String.valueOf(new DecimalFormat("#.##").format(ammountLeft)) + " left to spend").setContentText("Click here to add your transaction.")
                                         .setContentIntent(pendingIntentMain).setAutoCancel(true).setSmallIcon(R.drawable.ic_launcher_background)
                                         //Option to show timestamp in notification, set show timestamp to true
                                         .setWhen(System.currentTimeMillis()).setShowWhen(true).setPriority(Notification.PRIORITY_MAX)

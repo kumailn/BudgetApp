@@ -28,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -206,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
             percent5 = sharedPreferences.getInt("Percent5", 0);
         }
 
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,6 +217,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if(myIntent.getBooleanExtra("Notif", false)){
+            fab.performClick();
+        }
 
         pieChart = (PieChart) findViewById(R.id.pieChart);
 
@@ -411,22 +417,27 @@ public class MainActivity extends AppCompatActivity {
                            a.moveToFirst();
                            float totalN = a.getFloat(total);
                            Log.e("total is: ", Float.toString(totalN)); //WHERE THE TOTAL IS
-                            allItemPrices.clear();
-                            allItemCategories.clear();//
-                            allItemNames.clear();
+
+
                             Cursor u = database.rawQuery("SELECT * FROM TotalBudget", null);
                             int itemID = u.getColumnIndex("Item");
                             int categoryID = u.getColumnIndex("Category");
                             int costID = u.getColumnIndex("Cost");
                             try {
-                                while (u.moveToNext()) {
+                                int i = 0;
+                                /*while (u.moveToNext()) {
                                     allItemNames.add(u.getString(itemID));
                                     allItemCategories.add(u.getString(categoryID));
                                     allItemPrices.add(Float.toString(u.getFloat(costID)));
-                                }
+                                }*/
                             } finally {
-                                u.close();
+                                int j = 0;
                             }
+
+                            /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, allItemNames);
+                            ListView listView = findViewById(R.id.myListView);
+                            listView.setAdapter(adapter);*/
+
                             if(category1 != null)
                             {
                                 String[] columns = { "Cost" };
