@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -29,7 +30,7 @@ import org.json.JSONObject;
 
 public class LocationService extends Service {
     String ammountLeft = "0";
-
+    String myCurrentLocation = "lol";
     public LocationService() {
     }
 
@@ -86,42 +87,44 @@ public class LocationService extends Service {
         //String jsonURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" +lat+ ","+lon+"&rankby=distance&type=store&keyword=store&key=AIzaSyCWR1MBKg3N4DDdrpsQ4hhQkcUPVBBNMCE";
         Log.e("jsonURL", jsonURL);
         final String[] aaa = {""};
+        final String[] currentLocation = {"lol"};
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, jsonURL,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             aaa[0] = response.getJSONArray("results").getJSONObject(1).getString("name");
-                            //JSONArray jsonArray = response.getJSONArray("name");
-                            //Toast.makeText(MainActivity.this, "JSON WORKS", Toast.LENGTH_SHORT).show();
-                            Log.e("JSONVOLLEY", aaa[0]);
+                            if(!myCurrentLocation.equals(aaa[0])){
+                                myCurrentLocation = aaa[0];
+                                //JSONArray jsonArray = response.getJSONArray("name");
+                                //Toast.makeText(MainActivity.this, "JSON WORKS", Toast.LENGTH_SHORT).show();
+                                Log.e("JSONVOLLEY", aaa[0]);
 
+                                PowerManager pm = (PowerManager)getApplicationContext().getSystemService(Context.POWER_SERVICE);
+                                boolean isScreenOn = pm.isScreenOn();
+                                Log.e("screen on..........", ""+isScreenOn);
+                                if(isScreenOn==false)
+                                {
+                                    PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MyLock");
+                                    wl.acquire(10000);
+                                    PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"MyCpuLock");
 
+                                    wl_cpu.acquire(10000);
+                                }
 
-                            PowerManager pm = (PowerManager)getApplicationContext().getSystemService(Context.POWER_SERVICE);
-                            boolean isScreenOn = pm.isScreenOn();
-                            Log.e("screen on..........", ""+isScreenOn);
-                            if(isScreenOn==false)
-                            {
-                                PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK |PowerManager.ACQUIRE_CAUSES_WAKEUP |PowerManager.ON_AFTER_RELEASE,"MyLock");
-                                wl.acquire(10000);
-                                PowerManager.WakeLock wl_cpu = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,"MyCpuLock");
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                Intent intent_main = new Intent(getApplicationContext(), Main2Activity.class);
 
-                                wl_cpu.acquire(10000);
+                                PendingIntent pendingIntentMain = PendingIntent.getActivity(getApplicationContext(), 0, intent_main, PendingIntent.FLAG_CANCEL_CURRENT);
+                                Notification notificationPopup = new Notification.Builder(getApplicationContext()).setContentTitle("You're near, " + aaa[0] + ", you have " + ammountLeft + " left to spend").setContentText("Click here")
+                                        .setContentIntent(pendingIntentMain).setAutoCancel(true).setSmallIcon(R.drawable.ic_launcher_background)
+                                        //Option to show timestamp in notification, set show timestamp to true
+                                        .setWhen(System.currentTimeMillis()).setShowWhen(true).setPriority(Notification.PRIORITY_MAX)
+                                        .setDefaults(Notification.DEFAULT_ALL).build();
+                                notificationManager.notify(0, notificationPopup);
                             }
 
 
-
-                            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                            Intent intent_main = new Intent(getApplicationContext(), Main2Activity.class);
-
-                            PendingIntent pendingIntentMain = PendingIntent.getActivity(getApplicationContext(), 0, intent_main, PendingIntent.FLAG_CANCEL_CURRENT);
-                            Notification notificationPopup = new Notification.Builder(getApplicationContext()).setContentTitle("You're near, " + aaa[0] + ", you have " + ammountLeft + " left to spend").setContentText("Click here")
-                                    .setContentIntent(pendingIntentMain).setAutoCancel(true).setSmallIcon(R.drawable.ic_launcher_background)
-                                    //Option to show timestamp in notification, set show timestamp to true
-                                    .setWhen(System.currentTimeMillis()).setShowWhen(true).setPriority(Notification.PRIORITY_MAX)
-                                    .setDefaults(Notification.DEFAULT_ALL).build();
-                            notificationManager.notify(0, notificationPopup);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.e("No results found", "");
