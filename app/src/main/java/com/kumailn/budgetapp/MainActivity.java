@@ -412,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
                            float totalN = a.getFloat(total);
                            Log.e("total is: ", Float.toString(totalN)); //WHERE THE TOTAL IS
                             allItemPrices.clear();
-                            allItemCategories.clear();
+                            allItemCategories.clear();//
                             allItemNames.clear();
                             Cursor u = database.rawQuery("SELECT * FROM TotalBudget", null);
                             int itemID = u.getColumnIndex("Item");
