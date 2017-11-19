@@ -132,7 +132,8 @@ public class MainActivity extends AppCompatActivity {
         //Category and Percent values
 
         TextView textView = findViewById(R.id.text_spent);
-        textView.setText(String.valueOf(currentBudgetLeft));
+        textView.setText(String.valueOf("$" + String.format("%.2f",currentBudgetLeft)));
+
         Intent intent = new Intent(getApplicationContext(), BudgetWidget.class);
         intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
         int ids[] = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), BudgetWidget.class));
@@ -319,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         sharedPreferences.edit().putFloat("Budget", currentBudgetLeft).apply();
                         currentBudgetView = findViewById(R.id.text_spent);
-                        currentBudgetView.setText(String.valueOf("$"+String.format("%0.2f",currentBudgetLeft)));
+                        currentBudgetView.setText(String.valueOf(currentBudgetLeft));
 
                         String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
                         SQLiteDatabase database = openOrCreateDatabase("dataV4", MODE_PRIVATE, null);
