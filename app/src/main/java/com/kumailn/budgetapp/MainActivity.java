@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 101);
             }
-
+        //push
         }
         else{
             Intent i = new Intent(getApplicationContext(), LocationService.class);
