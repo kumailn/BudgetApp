@@ -23,9 +23,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +53,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -91,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
     float category5sum = 0;
     float[] categorysum = new float[5];
     //int[] percents = new int[5];
+
+    String currentItemCategory = "null";
 
 
     @Override
@@ -317,10 +323,29 @@ public class MainActivity extends AppCompatActivity {
         final EditText item = (EditText) view.findViewById(R.id.itemDescriptionID);
         final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
         Button submit = (Button) view.findViewById(R.id.submitButton);
+        final Spinner mySpin = view.findViewById(R.id.spinnerCat);
+        Log.e("Categories: ",  category1 + category2 + category3);
+        final ArrayList<String> ss = new ArrayList<>(Arrays.asList(category1, category2, category3, category4, category5));
+        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, ss);
+        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //mySpin.setSelection(0);
 
+        mySpin.setAdapter(myAdapter);
         alertDialogBuilder.setView(view); //Set the view to the Dialog View
         dialog = alertDialogBuilder.create();
         dialog.show();
+
+
+        mySpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentItemCategory = ss.get(position);
+                mySpin.setSelection(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
