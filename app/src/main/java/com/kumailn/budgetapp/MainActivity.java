@@ -208,24 +208,20 @@ public class MainActivity extends AppCompatActivity {
                         result = result * 100;
                         int cost = (int)result;
                         String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-                        SQLiteDatabase database = openOrCreateDatabase("data", MODE_PRIVATE, null);
+                        SQLiteDatabase database = openOrCreateDatabase("dataV2", MODE_PRIVATE, null);
                         database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost INT, Item VARCHAR(30), Date VARCHAR(10), Total INT, PRIMARY KEY(PurchaseID))");
 
                         try{
                            Cursor c = database.rawQuery("SELECT Max(PurchaseID) AS ID FROM TotalBudget", null);
-                           Cursor a = database.rawQuery("SELECT Sum(Cost) AS AA FROM TotalBudget", null);
 
-                            int total = a.getColumnIndex("AA");
-                           a.moveToFirst();
+
 
                            int purchaseID = c.getColumnIndex("ID");
                            c.moveToFirst();
                            Log.e("num is", Integer.toString(purchaseID));
                            Log.e("cursor is ", Integer.toString(c.getCount()));
                            int ID = c.getInt(purchaseID);
-                           int totalN = a.getInt(total);
-                            Toast.makeText(getApplicationContext(), totalN, Toast.LENGTH_SHORT).show();
-                            Log.e("purchaseID is ", Integer.toString(ID++));
+                           Log.e("purchaseID is ", Integer.toString(ID++));
                            ContentValues values = new ContentValues();
                            values.put("PurchaseID", ID);
                            values.put("Cost", cost);
@@ -233,7 +229,13 @@ public class MainActivity extends AppCompatActivity {
                            values.put("Date", formattedDate);
                            values.put("Total", 56);
                            database.insert("TotalBudget", null, values);
-                       }
+                           Cursor a = database.rawQuery("SELECT Sum(Cost) AS AA FROM TotalBudget", null);
+                           int total = a.getColumnIndex("AA");
+                           a.moveToFirst();
+                           int totalN = a.getInt(total);
+                           Log.e("total is: ", Integer.toString(totalN)); //WHERE THE TOTAL IS
+
+                        }
                        catch(Exception e)
                        {
                            Log.d("purchaseID is 0.", null);
