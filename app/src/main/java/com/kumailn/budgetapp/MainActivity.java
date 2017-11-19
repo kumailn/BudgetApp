@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     float category4sum = 0;
     float category5sum = 0;
     float[] categorysum = new float[5];
+    //int[] percents = new int[5];
 
 
     @Override
@@ -265,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
     pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
         @Override
         public void onValueSelected(Entry entry, int i, Highlight highlight) {
-            pieChart.setCenterText("Spent " + String.valueOf(entry.getVal()) + " Out of 28");
+            pieChart.setCenterText("Spent " + String.valueOf(categorysum[i]) + " Out of ");
         }
 
         @Override
