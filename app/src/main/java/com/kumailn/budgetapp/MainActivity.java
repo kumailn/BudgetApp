@@ -439,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.e("sqlerror",e.toString());
                         Toast.makeText(getApplicationContext(), "You did not enter an integer for cost.", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
-                        ShowInputDialog();
+                        ShowInputDialog(); //hello
                     }
                 }
             }
