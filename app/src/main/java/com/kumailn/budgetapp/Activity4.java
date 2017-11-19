@@ -13,17 +13,11 @@ public class Activity4 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
-                .setImage(R.drawable.about_icon_github)
+                .setImage(R.drawable.ic_wallet)
                 .setDescription("A Budget App which helps you manage your budget.")
-                .addGroup("Connect with us")
-                .addEmail("elmehdi.sakout@gmail.com")
-                .addWebsite("http://medyo.github.io/")
-                .addFacebook("the.medy")
-                .addTwitter("medyo80")
-                .addYoutube("UCdPQtdWIsg7_pi4mrRu46vA")
-                .addPlayStore("com.ideashower.readitlater.pro")
-                .addGitHub("medyo")
-                .addInstagram("medyo80")
+                .addGitHub("kumailn")
+                .addGitHub("SkilloverluckST")
+                .addGitHub("Saamirt")
                 .create();
         setContentView(aboutPage);
 
