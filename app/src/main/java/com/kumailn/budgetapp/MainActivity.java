@@ -378,8 +378,8 @@ public class MainActivity extends AppCompatActivity {
 
 
                         String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-                        SQLiteDatabase database = openOrCreateDatabase("dataV4", MODE_PRIVATE, null);
-                        database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost FLOAT, Item VARCHAR(30), Date VARCHAR(10), Credit BIT, PRIMARY KEY(PurchaseID))");
+                        SQLiteDatabase database = openOrCreateDatabase("dataV5", MODE_PRIVATE, null);
+                        database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost FLOAT, Category VARCHAR(30), Item VARCHAR(30), Date VARCHAR(10), Credit BIT, PRIMARY KEY(PurchaseID))");
                         try{
                            Cursor c = database.rawQuery("SELECT Max(PurchaseID) AS ID FROM TotalBudget", null);
 
@@ -394,7 +394,8 @@ public class MainActivity extends AppCompatActivity {
                            ContentValues values = new ContentValues();
                            values.put("PurchaseID", ID);
                            values.put("Cost", result);
-                           values.put("Item", currentItemCategory);
+                           values.put("Category", currentItemCategory);
+                           values.put("Item", item.getText().toString());
                            values.put("Date", formattedDate);
                            if(checkBox.isChecked())
                                values.put("Credit", 1);
@@ -412,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 String[] columns = { "Cost" };
                                 String[] whereArguments = {category1};
-                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                Cursor cursor = database.query("TotalBudget", columns, "Category = ?", whereArguments, null, null, null);
                                 float cat1 = 0;
                                 try {
                                     while (cursor.moveToNext()) {
@@ -428,7 +429,7 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 String[] columns = { "Cost" };
                                 String[] whereArguments = {category2};
-                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                Cursor cursor = database.query("TotalBudget", columns, "Category = ?", whereArguments, null, null, null);
                                 float cat2 = 0;
                                 try {
                                     while (cursor.moveToNext()) {
@@ -444,7 +445,7 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 String[] columns = { "Cost" };
                                 String[] whereArguments = {category3};
-                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                Cursor cursor = database.query("TotalBudget", columns, "Category = ?", whereArguments, null, null, null);
                                 float cat3 = 0;
                                 try {
                                     while (cursor.moveToNext()) {
@@ -460,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 String[] columns = { "Cost" };
                                 String[] whereArguments = {category4};
-                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                Cursor cursor = database.query("TotalBudget", columns, "Category = ?", whereArguments, null, null, null);
                                 float cat4 = 0;
                                 try {
                                     while (cursor.moveToNext()) {
@@ -476,7 +477,7 @@ public class MainActivity extends AppCompatActivity {
                             {
                                 String[] columns = { "Cost" };
                                 String[] whereArguments = {category5};
-                                Cursor cursor = database.query("TotalBudget", columns, "item = ?", whereArguments, null, null, null);
+                                Cursor cursor = database.query("TotalBudget", columns, "Category = ?", whereArguments, null, null, null);
                                 float cat5 = 0;
                                 try {
                                     while (cursor.moveToNext()) {
