@@ -117,7 +117,7 @@ public class LocationService extends Service {
                                 Intent intent_main = new Intent(getApplicationContext(), Main2Activity.class);
 
                                 PendingIntent pendingIntentMain = PendingIntent.getActivity(getApplicationContext(), 0, intent_main, PendingIntent.FLAG_CANCEL_CURRENT);
-                                Notification notificationPopup = new Notification.Builder(getApplicationContext()).setContentTitle("You're near, " + aaa[0] + ", you have " + ammountLeft + " left to spend").setContentText("Click here")
+                                Notification notificationPopup = new Notification.Builder(getApplicationContext()).setContentTitle("You're at, " + aaa[0] + ", you have " + ammountLeft + " left to spend").setContentText("Click here")
                                         .setContentIntent(pendingIntentMain).setAutoCancel(true).setSmallIcon(R.drawable.ic_launcher_background)
                                         //Option to show timestamp in notification, set show timestamp to true
                                         .setWhen(System.currentTimeMillis()).setShowWhen(true).setPriority(Notification.PRIORITY_MAX)

@@ -37,6 +37,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONException;
@@ -70,16 +72,18 @@ public class MainActivity extends AppCompatActivity {
     LineChart chart;
 
     //Category/Percent vars
-    String category1;
-    String category2;
-    String category3;
-    String category4;
-    String category5;
-    int percent1;
-    int percent2;
-    int percent3;
-    int percent4;
-    int percent5;
+    String category1 = ".";
+    String category2 = ".";
+    String category3 = ".";
+    String category4 = ".";
+    String category5 = ".";
+    String[] categories;
+    int percent1 = 1;
+    int percent2 = 1;
+    int percent3 = 1;
+    int percent4 = 1;
+    int percent5 = 1;
+    String[] percents;
 
 
 
@@ -212,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setData(pieData);
         pieChart.setDescription(null);
         pieChart.animateY(3000);
+        pieChart.setCenterTextSize(20);
 
 
         //line chart
@@ -221,27 +226,38 @@ public class MainActivity extends AppCompatActivity {
             dataObjects[ii] = ii;
         }
 
+        pieChart.setCenterText("Something ");
+
     }
 
     public void AddValuesToPIEENTRY(){
-
-        entries.add(new BarEntry(2f, 0));
-        entries.add(new BarEntry(4f, 1));
-        entries.add(new BarEntry(6f, 2));
-        entries.add(new BarEntry(8f, 3));
-        entries.add(new BarEntry(7f, 4));
-        entries.add(new BarEntry(3f, 5));
+        entries.add(new BarEntry(percent1, 0));
+        entries.add(new BarEntry(percent2, 1));
+        entries.add(new BarEntry(percent3, 2));
+        entries.add(new BarEntry(percent4, 3));
+        entries.add(new BarEntry(percent5, 4));
 
     }
 
     public void AddValuesToPieEntryLabels(){
+            PieEntryLabels.add(category1);
+            PieEntryLabels.add(category2);
+            PieEntryLabels.add(category3);
+            PieEntryLabels.add(category4);
+            PieEntryLabels.add(category5);
 
-        PieEntryLabels.add("January");
-        PieEntryLabels.add("February");
-        PieEntryLabels.add("March");
-        PieEntryLabels.add("April");
-        PieEntryLabels.add("May");
-        PieEntryLabels.add("June");
+
+    pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+        @Override
+        public void onValueSelected(Entry entry, int i, Highlight highlight) {
+            pieChart.setCenterText("Spent " + String.valueOf(entry.getVal()) + " Out of 28");
+        }
+
+        @Override
+        public void onNothingSelected() {
+
+        }
+    });
 
     }
 
@@ -283,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                         Integer value1 = sharedPreferences.getInt("Num", 0);
                         totalMonthlyBudget = sharedPreferences.getFloat("TotalBudget", 0);
                         float result = Float.valueOf(cost.getText().toString());
-                        if(value1 == 1){
+                        if(value1 == 1 || value1 == 2){
                             currentBudgetLeft = totalMonthlyBudget - result;
                             sharedPreferences.edit().putInt("Num", value1 + 1).apply();
                         }else{
