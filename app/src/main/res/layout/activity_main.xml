@@ -34,7 +34,7 @@
                 android:id="@+id/text_spent_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Money Spent"
+                android:text="Remaining budget:"
                 android:textAlignment="center"
                 android:textAppearance="@android:style/TextAppearance.Material.Menu"
                 android:textSize="24sp" />

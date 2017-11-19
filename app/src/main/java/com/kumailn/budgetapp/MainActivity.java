@@ -1,6 +1,7 @@
 package com.kumailn.budgetapp;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -10,6 +11,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -304,6 +306,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
 
         submit.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View view) {
                 if(!cost.getText().toString().isEmpty()) //checks if the user has entered anything
@@ -320,7 +323,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                         sharedPreferences.edit().putFloat("Budget", currentBudgetLeft).apply();
                         currentBudgetView = findViewById(R.id.text_spent);
-                        currentBudgetView.setText(String.valueOf(currentBudgetLeft));
+                        //currentBudgetView.setText(String.valueOf(currentBudgetLeft));
+                        currentBudgetView.setText(String.valueOf("$" + String.format("%.2f",currentBudgetLeft)));
+                        TextView t = findViewById(R.id.text_spent);
+
+                        if(currentBudgetLeft < 0){
+                            t.setTextColor(Color.RED);
+                        }
+                        else{
+                            t.setTextColor(R.color.colorPrimary);
+                        }
+
 
                         String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
                         SQLiteDatabase database = openOrCreateDatabase("dataV4", MODE_PRIVATE, null);
