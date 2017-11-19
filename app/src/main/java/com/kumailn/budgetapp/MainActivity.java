@@ -205,14 +205,17 @@ public class MainActivity extends AppCompatActivity {
                 {
                     try{
                         float result = Float.valueOf(cost.getText().toString());
-                        result = result * 100;
-                        int cost = (int)result;
-                        String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-                        SQLiteDatabase database = openOrCreateDatabase("dataV2", MODE_PRIVATE, null);
-                        database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost INT, Item VARCHAR(30), Date VARCHAR(10), Total INT, PRIMARY KEY(PurchaseID))");
 
+                        String formattedDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+                        SQLiteDatabase database = openOrCreateDatabase("dataV4", MODE_PRIVATE, null);
+                        database.execSQL("CREATE TABLE IF NOT EXISTS TotalBudget(PurchaseID INT NOT NULL, Cost FLOAT, Item VARCHAR(30), Date VARCHAR(10), Total FLOAT, PRIMARY KEY(PurchaseID))");
                         try{
                            Cursor c = database.rawQuery("SELECT Max(PurchaseID) AS ID FROM TotalBudget", null);
+
+                           Cursor b = database.rawQuery("SELECT Min(Total) AS budget FROM TotalBudget", null);
+                           b.moveToFirst();
+                           float minBudget = b.getFloat(0);
+                           minBudget = minBudget - result;
 
 
 
@@ -224,10 +227,10 @@ public class MainActivity extends AppCompatActivity {
                            Log.e("purchaseID is ", Integer.toString(ID++));
                            ContentValues values = new ContentValues();
                            values.put("PurchaseID", ID);
-                           values.put("Cost", cost);
+                           values.put("Cost", result);
                            values.put("Item", item.getText().toString());
                            values.put("Date", formattedDate);
-                           values.put("Total", 56);
+                           values.put("Total", minBudget);
                            database.insert("TotalBudget", null, values);
                            Cursor a = database.rawQuery("SELECT Sum(Cost) AS AA FROM TotalBudget", null);
                            int total = a.getColumnIndex("AA");
